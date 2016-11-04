@@ -66,8 +66,8 @@ public class GPSActivity extends AppCompatActivity {
         // Initialize the location fields
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
-            int lat = (int) (location.getLatitude());
-            int lng = (int) (location.getLongitude());
+            float lat = (float) (location.getLatitude());
+            float lng = (float) (location.getLongitude());
             latitudeGPSTextView.setText(String.valueOf(lat));
             longitudeGPSTextView.setText(String.valueOf(lng));
         } else {
@@ -102,8 +102,8 @@ public class GPSActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
             Log.d("PELLODEBUG",location.toString());
-            int lat = (int) (location.getLatitude());
-            int lng = (int) (location.getLongitude());
+            float lat = (float) (location.getLatitude());
+            float lng = (float) (location.getLongitude());
             latitudeGPSTextView.setText(String.valueOf(lat));
             longitudeGPSTextView.setText(String.valueOf(lng));
         }

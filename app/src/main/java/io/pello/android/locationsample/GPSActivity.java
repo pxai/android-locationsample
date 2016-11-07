@@ -19,6 +19,10 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+/**
+ * This uses a simple version
+ * @author PELLO_ALTADILL
+ */
 public class GPSActivity extends AppCompatActivity {
 
     private TextView longitudeGPSTextView;
@@ -26,6 +30,10 @@ public class GPSActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private String provider;
     private Location location;
+    // Define a listener that responds to location updates
+    private LocationListener locationListener;
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -45,10 +53,12 @@ public class GPSActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
-
     }
 
-
+    /**
+     * Criteria lets us to specify options
+     * @param view
+     */
     public void getPosition(View view) {
 
         Log.d("PELLODEBUG", "Get GPS Position: ");
@@ -58,7 +68,7 @@ public class GPSActivity extends AppCompatActivity {
         criteria.setBearingRequired(false);//true if required
         criteria.setCostAllowed(true);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
-        provider = locationManager.getBestProvider(criteria, false);//search for enabled provider
+        provider = locationManager.getBestProvider(criteria, false); //search for enabled provider
         Log.d("PELLODEBUG", "Provider found: " + provider);
     try {
         location = locationManager.getLastKnownLocation(provider);
@@ -75,7 +85,28 @@ public class GPSActivity extends AppCompatActivity {
             longitudeGPSTextView.setText("Provider not available");
         }
 
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                Log.d("PELLODEBUG",location.toString());
+                float lat = (float) (location.getLatitude());
+                float lng = (float) (location.getLongitude());
+                latitudeGPSTextView.setText(String.valueOf(lat));
+                longitudeGPSTextView.setText(String.valueOf(lng));
+            }
 
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {
+                //Toast.makeText(this, "Enabled new provider " + provider,Toast.LENGTH_SHORT).show();
+            }
+
+            public void onProviderDisabled(String provider) {
+                //Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        // Set a listener for updates!!
        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
     } catch (SecurityException se) {
@@ -97,27 +128,6 @@ public class GPSActivity extends AppCompatActivity {
         //locationManager.removeUpdates(this);
     }
 
-    // Define a listener that responds to location updates
-    LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            // Called when a new location is found by the network location provider.
-            Log.d("PELLODEBUG",location.toString());
-            float lat = (float) (location.getLatitude());
-            float lng = (float) (location.getLongitude());
-            latitudeGPSTextView.setText(String.valueOf(lat));
-            longitudeGPSTextView.setText(String.valueOf(lng));
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-        public void onProviderEnabled(String provider) {
-            //Toast.makeText(this, "Enabled new provider " + provider,Toast.LENGTH_SHORT).show();
-        }
-
-        public void onProviderDisabled(String provider) {
-            //Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
-        }
-    };
 
 
 

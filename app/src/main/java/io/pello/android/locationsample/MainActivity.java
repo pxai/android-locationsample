@@ -15,6 +15,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * Gets coordinates using google play API.
+ * Check the listeners
+ * @author PELLO_ALTADILL
+ *
+ */
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, OnConnectionFailedListener{
 
